@@ -58,7 +58,7 @@ class completed_status(str, Enum):
 
 
 # ---------- MODELS ----------
-class to_do(BaseModel):
+class Todo_Model(BaseModel):
     title: str
     description: str
     completed: completed_status = completed_status.NOT_STARTED
@@ -80,6 +80,29 @@ def get_todos():
 
     return rows
 
+@app.post("/add")
+def add_todo(todo: Todo_Model):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "INSERT INTO todos (title, description, completed) VALUES(?, ?, ?)",
+        (todo.title, todo.description, todo.completed))
+
+    conn.commit()
+    conn.close()
+    return "Add Succes"
+
+@app.delete("/delete/{id}")
+def delete_todo(id: int):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM todos WHERE id = ?", (id,))
+
+    conn.commit()
+    conn.close()
+    return "Delete Succes"
 
 
 # Добавить несколько данных в БД

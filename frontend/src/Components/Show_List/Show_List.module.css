@@ -62,3 +62,22 @@ tbody td:last-child:contains("done") {
   color: #f59e0b;
   font-weight: 600;
 }
+
+.add_todo_td_button{
+  text-align: center;
+}
+.add_todo_td_button:hover{
+  cursor: pointer;
+}
+
+.add_button{
+  padding: 5px 20px;
+  background-color: #4f46e5;
+  border-radius: 5px;
+}
+
+.delete_button{
+  padding: 5px 20px;
+  background-color: red;
+  border-radius: 5px;
+}

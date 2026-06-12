@@ -4,3 +4,9 @@ export type Todo = {
     description: string,
     completed: string
   }
+
+export type Todo_Add = {
+    title: string,
+    description: string,
+    completed: string
+  }

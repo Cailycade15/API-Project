@@ -25,7 +25,9 @@ function Edit_Text_Field({value, onSave}: Props) {
                     autoFocus
                     onChange={(e) => setText(e.target.value)}
                     onBlur={handleSave}
-                    onKeyDown={(e) => e.key === "Enter" && handleSave()}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") handleSave()
+                    }}
                 />
             )
             : (
