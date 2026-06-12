@@ -1,10 +1,26 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from enum import Enum
 import sqlite3
 
 
 app = FastAPI()
+
+# Список разрешенных сайтов откуда будут приниматься запросы
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
+# Делаем для CORS чтобы был доступ к эндпоинтам у разрешенных сайтов
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # или ["*"] для всех (небезопасно для продакшена)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 DB_NAME = "database.db"
 
@@ -49,6 +65,9 @@ class to_do(BaseModel):
 
 
 
+@app.get("/")
+def init():
+    return "Start SERVER"
 
 @app.get("/todos/")
 def get_todos():
@@ -61,3 +80,27 @@ def get_todos():
 
     return rows
 
+
+
+# Добавить несколько данных в БД
+# def add_test_data():
+#     conn = sqlite3.connect(DB_NAME)
+#     cursor = conn.cursor()
+
+#     todos = [
+#         ("Купить продукты", "Молоко, хлеб, яйца", "not_started"),
+#         ("Сделать проект", "Закончить backend на FastAPI", "in_progress"),
+#         ("Потренироваться", "Сходить в зал", "done"),
+#     ]
+
+#     cursor.executemany(
+#         "INSERT INTO todos (title, description, completed) VALUES (?, ?, ?)",
+#         todos
+#     )
+
+#     conn.commit()
+#     conn.close()
+
+#     print("Данные добавлены!")
+
+# add_test_data()
